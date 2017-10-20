@@ -1,0 +1,21 @@
+<!--pages/learn/index.wxml-->
+<view > {{result}} </view>
+<view class="word" wx:if="{{words}}">
+  <view class="section__title">Words</view>
+  <view wx:for="{{words}}" wx:key="*this" class="flex-wrp" >
+    <view class="flex-item wordlevel">
+      <view class='title'>{{item}} {{(index==id  && getScore)?score:''}}</view>
+      <view class='flex-wrp buttons'>
+          <button bindtap="btnRecord"> 原声 </button>
+          <button bindtap="btnRecord" bindtap="toRecord" data-word="{{item}}" data-id="{{index}}" > {{(index==id  && isRecord)?'停止':'录音'}} </button>
+          <button bindtap="btnRecord"> 回放 </button>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="sentence" wx:if="{{sentences}}">
+  <view class="section__title">Sentences</view>
+  <view wx:for="{{sentences}}" wx:key="*this" class="flex-wrp">
+    <view class="flex-item wordlevel"> {{item}} </view>
+  </view>
+</view>

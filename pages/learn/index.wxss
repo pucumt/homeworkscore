@@ -1,0 +1,31 @@
+/* pages/learn/index.wxss */
+.word{
+    margin-bottom:10px;
+}
+.section__title{
+    background-color: gray;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 5px 10px;
+    color: #fff;
+}
+.flex-wrp{
+  display: flex;
+  flex-direction:column;
+}
+.flex-item.wordlevel{
+  padding: 5px 20px;
+  font-size: 20px;
+  border-bottom: 1px solid gray;
+}
+.wordlevel .title{
+  text-align: center;
+  margin-bottom: 10px;
+}
+.buttons{
+  flex-direction: row;
+}
+.buttons button{
+  width: auto;
+  font-size: 12px;
+}
