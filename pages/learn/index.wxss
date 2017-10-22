@@ -14,9 +14,10 @@
   flex-direction:column;
 }
 .flex-item.wordlevel{
-  padding: 5px 20px;
+  padding: 5px 0;
   font-size: 20px;
   border-bottom: 1px solid gray;
+  background-color: #f5f6f7
 }
 .wordlevel .title{
   text-align: center;
@@ -26,6 +27,13 @@
   flex-direction: row;
 }
 .buttons button{
-  width: auto;
+  width: 33.33%;
   font-size: 12px;
+  border-radius:0;
+  background-color: #337ab7;
+  color: #fff;
+}
+.buttons button::after{
+  border-radius:0;
+  border-color: #fff;
 }

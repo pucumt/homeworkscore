@@ -12,7 +12,8 @@ Page({
     id: 0,
     isRecord:false,
     getScore:false,
-    score:0
+    score:0,
+    src:null
   },
   toRecord: function (e) {
     if (this.data.isRecord)
@@ -29,7 +30,7 @@ Page({
     this.recorder.start({
       duration: 3000,
       serverParams: { // 录音服务参数
-        coreType: "word.eval", // 选择内核sent.eval
+        coreType: e.currentTarget.dataset.type+".eval", // 选择内核sent.eval
         refText: e.currentTarget.dataset.word, // 参考文本
         scale: 100,
         precision: 1,
@@ -44,6 +45,7 @@ Page({
       },
       onScore: function (ret) { // 评分成功需要显示评分结果 
         var data = JSON.parse(ret);
+        console.log(ret)
         that.setData({
           result: 'done get',
           isRecord: false,
@@ -52,10 +54,9 @@ Page({
         });
       },
       onStop: function (ret) {
-        // that.setData({
-        //   isRecord: false,
-        //   getScore: false
-        // });
+        that.setData({
+          src: ret.tempFilePath // this will be change later
+        });
       },
       fail: function (ret) {
         that.setData({
@@ -65,11 +66,31 @@ Page({
       }
     });
   },
+  toplay: function(e){
+
+  },
+  toReplay: function(e){
+    // e.currentTarget.dataset.id
+    var that = this;
+    this.audioCtx.src = this.data.src;
+    this.audioCtx.onCanplay(() => {
+      // console.log('准备好要播放')
+      that.audioCtx.play();
+    })
+    this.audioCtx.onPlay(() => {
+      // console.log('开始播放')
+    })
+    this.audioCtx.onError((res) => {
+      console.log(res.errMsg)
+      console.log(res.errCode)
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     this.recorder = new Recorder('17KouyuTestAppKey', '17KouyuTestSecretKey');
+    this.audioCtx = wx.createInnerAudioContext();
   },
 
   /**
