@@ -1,7 +1,6 @@
 <!--pages/learn/index.wxml-->
-<view> {{result}} </view>
 <view class="word" wx:if="{{words}}">
-  <view class="section__title">Words</view>
+  <view class="section__title">> Words</view>
   <view wx:for="{{words}}" wx:key="*this" class="flex-wrp">
     <view class="flex-item wordlevel">
       <view class='title'>{{item}} {{(index==id && getScore)?score:''}}</view>
@@ -14,7 +13,7 @@
   </view>
 </view>
 <view class="sentence" wx:if="{{sentences}}">
-  <view class="section__title">Sentences</view>
+  <view class="section__title">> Sentences</view>
   <view wx:for="{{sentences}}" wx:key="*this" class="flex-wrp">
     <view class="flex-item wordlevel">
       <view class='title'>{{item}} {{(index==id && getScore)?score:''}}</view>
