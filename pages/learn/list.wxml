@@ -1,0 +1,15 @@
+<!--pages/learn/list.wxml-->
+<view class='selectStudent'  wx:if="{{curStudent==null}}">
+  <view class='title'>选择学生</view>
+  <picker class='pickerParent' bindchange="changeStudent" value="{{index}}" range="{{students}}">
+    <view class="picker">
+      <text>{{students[index]}}</text>
+      <text>></text>
+    </view>
+  </picker>
+  <button bindtap='showList'>下一步</button>
+</view>
+
+<view wx:else>
+  show list
+</view>

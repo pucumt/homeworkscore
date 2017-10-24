@@ -1,0 +1,29 @@
+/* pages/learn/list.wxss */
+
+page {
+  background-color: #fafafa;
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.picker {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.pickerParent{
+  margin-bottom: 20px; 
+}
+
+.selectStudent button{
+    background-color: #337ab7;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 0;
+}

@@ -1,21 +1,32 @@
 /**index.wxss**/
+
+page {
+  background-color: #fafafa;
+}
+
 .userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 0 20px;
 }
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+.userInputs {
+  margin-right: 20px;
 }
 
-.userinfo-nickname {
-  color: #aaa;
+.userinfo input {
+  margin-bottom: 15px;
+  background-color: #fff;
+  padding: 6px 10px;
+  width: 100%;
 }
 
-.usermotto {
-  margin-top: 200px;
+#btnLogin {
+  background-color: #337ab7;
+  color: #fff;
+  font-size: 16px;
+  width: 100%;
+  border-radius: 0;
+}
+
+.msg{
+  text-align: center;
 }

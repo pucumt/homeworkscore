@@ -4,56 +4,69 @@ const app = getApp()
 
 Page({
   data: {
-    motto: '这是一个demo',
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    userName: null,
+    userPassword: null,
+    msg: null
   },
-  //事件处理函数
-  bindViewTap: function () {
-    wx.navigateTo({
-      url: '../logs/logs'
+  nameInput: function (e) {
+    this.setData({
+      userName: e.detail.value
     })
   },
+  passwordInput: function (e) {
+    this.setData({
+      userPassword: e.detail.value
+    })
+  },
+  showMsg: function (msg) {
+    this.setData({
+      msg: msg
+    })
+    var that = this;
+    setTimeout(function () {
+      that.setData({
+        msg: null
+      })
+    }, 1500)
+  },
+  //事件处理函数
   openLearningMain: function () {
-    wx.navigateTo({
-      url: '../learn/index'
+    if (this.data.userName == null || this.data.userPassword == null) {
+      this.showMsg("用户名密码不能为空");
+      return;
+    }
+    var that = this;
+    wx.request({
+      url: 'http://localhost:2369/app/login', //仅为示例，并非真实的接口地址
+      data: {
+        name: this.data.userName,
+        password: this.data.userPassword
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      method: "POST",
+      success: function (res) {
+        if (res.data.sucess) {
+          app.globalData.account.mobile = that.data.userName;
+          app.globalData.account.students = res.data.students;
+          wx.navigateTo({
+            url: '../learn/list'
+          })
+        }
+        else {
+          var error = res.data.error;
+          that.showMsg(error || "登录出错了");
+          return;
+        }
+      },
+      fail: function (e) {
+        console.log(e);
+        that.showMsg("登录出错了");
+        return;
+      }
     })
   },
   onLoad: function () {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse) {
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
-    }
-  },
-  getUserInfo: function (e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
   }
 })
