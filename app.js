@@ -11,6 +11,9 @@ App({
       mobile:null,
       students:[],
       curStudent:null
-    }
+    },
+    curBook:{},
+    curLessonId: null,
+    url:"http://58.221.162.134:88"
   }
 })

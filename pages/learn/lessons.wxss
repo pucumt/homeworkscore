@@ -1,0 +1,7 @@
+/* pages/learn/lessons.wxss */
+.picker {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}

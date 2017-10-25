@@ -1,23 +1,40 @@
 // pages/learn/index.js
 const Recorder = require('../../vendor/skegn_weapp_sdk_v2/index.js').Recorder;
+const app = getApp()
 
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    words: ['english', 'teacher', 'student'],
-    sentences: ['It is beautiful', 'I like learning english very much', 'Do you like the weather today'],
+    words: [],
+    sentences: [],
+    paragraph: null,
     result: "result",
     id: 0,
-    isRecord:false,
-    getScore:false,
-    score:0,
-    src:null
+    isRecord: false,
+    getScore: false,
+    score: 0,
+    src: null,
+    msg: null
+  },
+  play:function(){
+    var that = this;
+    this.audioCtx.src = this.data.src;
+    this.audioCtx.onCanplay(() => {
+      // console.log('准备好要播放')
+      that.audioCtx.play();
+    })
+    this.audioCtx.onPlay(() => {
+      // console.log('开始播放')
+    })
+    this.audioCtx.onError((res) => {
+      console.log(res.errMsg)
+      console.log(res.errCode)
+    })
   },
   toRecord: function (e) {
-    if (this.data.isRecord)
-    {
+    if (this.data.isRecord) {
       this.recorder.stop();
       return;
     }
@@ -30,7 +47,7 @@ Page({
     this.recorder.start({
       duration: 3000,
       serverParams: { // 录音服务参数
-        coreType: e.currentTarget.dataset.type+".eval", // 选择内核sent.eval
+        coreType: e.currentTarget.dataset.type + ".eval", // 选择内核sent.eval
         refText: e.currentTarget.dataset.word, // 参考文本
         scale: 100,
         precision: 1,
@@ -40,7 +57,7 @@ Page({
         //开始录音
         that.setData({
           isRecord: true,
-          getScore:false
+          getScore: false
         });
       },
       onScore: function (ret) { // 评分成功需要显示评分结果 
@@ -49,7 +66,7 @@ Page({
         that.setData({
           result: 'done get',
           isRecord: false,
-          getScore:true,
+          getScore: true,
           score: data.result.overall // this will be change later
         });
       },
@@ -66,24 +83,16 @@ Page({
       }
     });
   },
-  toplay: function(e){
-
+  toplay: function (e) {
+    this.setData({
+      src: app.globalData.url +"/uploads/books/" + app.globalData.curBook.bookId + "/" + app.globalData.curLessonId + "/" + e.currentTarget.dataset.id + ".mp3"
+    });
+    this.play();
   },
-  toReplay: function(e){
+  toReplay: function (e) {
     // e.currentTarget.dataset.id
-    var that = this;
-    this.audioCtx.src = this.data.src;
-    this.audioCtx.onCanplay(() => {
-      // console.log('准备好要播放')
-      that.audioCtx.play();
-    })
-    this.audioCtx.onPlay(() => {
-      // console.log('开始播放')
-    })
-    this.audioCtx.onError((res) => {
-      console.log(res.errMsg)
-      console.log(res.errCode)
-    })
+    // audioUrl[0] = "../../uploads/books/" + $("#bookId").val() + "/" + $('#lessonId').val() + "/" + content._id + ".mp3";
+    this.play();
   },
   /**
    * 生命周期函数--监听页面加载
@@ -91,6 +100,64 @@ Page({
   onLoad: function (options) {
     this.recorder = new Recorder('17KouyuTestAppKey', '17KouyuTestSecretKey');
     this.audioCtx = wx.createInnerAudioContext();
+
+    var that = this;
+    wx.request({
+      url: app.globalData.url +'/app/contents',
+      data: {
+        studentId: app.globalData.account.curStudent._id,
+        lessonId: app.globalData.curLessonId
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      method: "POST",
+      success: function (res) {
+        if (res.data.error) {
+          that.setData({
+            msg: res.data.error
+          });
+        }
+        else {
+          if (res.data.length == 0) {
+            that.setData({
+              msg: "还没有课文呢"
+            });
+          }
+          else {
+            var words = [],
+              sentences = [],
+              paragraph;
+            res.data.forEach(content => {
+              switch (content.contentType) {
+                case 0:
+                  paragraph = content;
+                  break;
+                case 1:
+                  words.push(content);
+                  break;
+                case 2:
+                  sentences.push(content);
+                  break;
+              }
+            });
+            that.setData({
+              msg: null,
+              words: words,
+              sentences: sentences,
+              paragraph: paragraph
+            });
+          }
+        }
+      },
+      fail: function (e) {
+        console.log(e);
+        that.setData({
+          msg: "出错了"
+        });
+        return;
+      }
+    })
   },
 
   /**

@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/learn/index",
-    "pages/learn/list"
+    "pages/learn/list",
+    "pages/learn/lessons"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -25,6 +25,12 @@
 					"name": "list",
 					"pathName": "pages/learn/list",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "lesson",
+					"pathName": "pages/learn/lessons",
+					"query": ""
 				}
 			]
 		},

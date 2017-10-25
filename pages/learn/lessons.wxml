@@ -1,0 +1,14 @@
+<!--pages/learn/lessons.wxml-->
+<view>
+  <view wx:if="{{lessons && lessons.length>0}}">
+    <view wx:for="{{lessons}}" wx:key="*this">
+      <view class='picker' bindtap='gotoLesson' data-id="{{item._id}}">
+        <text>{{item.name}}</text>
+        <text>></text>
+      </view>
+    </view>
+  </view>
+  <view wx:else>
+    {{msg}}
+  </view>
+</view>

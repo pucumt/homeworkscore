@@ -1,5 +1,5 @@
 <!--pages/learn/list.wxml-->
-<view class='selectStudent'  wx:if="{{curStudent==null}}">
+<view class='selectStudent' wx:if="{{curStudent==null}}">
   <view class='title'>选择学生</view>
   <picker class='pickerParent' bindchange="changeStudent" value="{{index}}" range="{{students}}">
     <view class="picker">
@@ -11,5 +11,15 @@
 </view>
 
 <view wx:else>
-  show list
+  <view wx:if="{{books && books.length>0}}">
+    <view wx:for="{{books}}" wx:key="*this">
+      <view class='picker' bindtap='gotoBook' data-id="{{item.bookId}}" data-minLesson="{{item.minLesson}}" data-maxLesson="{{item.maxLesson}}">
+        <text>{{item.name}}</text>
+        <text>></text>
+      </view>
+    </view>
+  </view>
+  <view wx:else>
+    {{msg}}
+  </view>
 </view>

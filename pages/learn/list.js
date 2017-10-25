@@ -9,7 +9,9 @@ Page({
   data: {
     students: null,
     index: 0,
-    curStudent: null
+    curStudent: null,
+    books:null,
+    msg:"你没有要学习的课程"
   },
   changeStudent: function (e) {
     app.globalData.account.curStudent = this.globalStudents[parseInt(e.detail.value)];
@@ -24,7 +26,52 @@ Page({
     this.toGetList();
   },
   toGetList: function () {
-
+    var that = this;
+    wx.request({
+      url: app.globalData.url +'/app/list', 
+      data: {
+        studentId: app.globalData.account.curStudent._id
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      method: "POST",
+      success: function (res) {
+        if (res.data.error) {
+          that.setData({
+            msg: res.data.error
+          });  
+        }
+        else {
+          that.setData({
+            books: res.data
+          });  
+          if (res.data.length==0)
+          {
+            that.setData({
+              msg: "你没有要学习的课程"
+            });
+          }
+        }
+      },
+      fail: function (e) {
+        console.log(e);
+        that.setData({
+          msg:"出错了"
+        });
+        return;
+      }
+    })
+  },
+  gotoBook:function(e){
+    app.globalData.curBook = {
+      bookId:e.currentTarget.dataset.id,
+      minLesson: e.currentTarget.dataset.minlesson,
+      maxLesson: e.currentTarget.dataset.maxlesson
+    };
+    wx.navigateTo({
+      url: '../learn/lessons'
+    })
   },
   /**
    * 生命周期函数--监听页面加载

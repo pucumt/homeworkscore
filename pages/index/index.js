@@ -37,7 +37,7 @@ Page({
     }
     var that = this;
     wx.request({
-      url: 'http://localhost:2369/app/login', //仅为示例，并非真实的接口地址
+      url: app.globalData.url+'/app/login', 
       data: {
         name: this.data.userName,
         password: this.data.userPassword
