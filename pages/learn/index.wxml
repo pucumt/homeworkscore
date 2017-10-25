@@ -7,7 +7,7 @@
         <view class='title'>{{item.name}} {{item.score?item.score:''}}</view>
         <view class='flex-wrp buttons'>
           <button bindtap="toplay" data-id="{{item._id}}"> 原声 </button>
-          <button bindtap="toRecord" data-word="{{item.name}}" data-type="word" data-id="{{index}}"> {{(index==id && isRecord)?'停止':'录音'}} </button>
+          <button bindtap="toRecord" data-word="{{item.name}}" data-type="word" data-id="{{item._id}}" > {{(item._id==id && isRecord)?'停止':'录音'}} </button>
           <button bindtap="toReplay"> 回放 </button>
         </view>
       </view>
@@ -20,7 +20,7 @@
         <view class='title'>{{item.name}} {{item.score?item.score:''}}</view>
         <view class='flex-wrp buttons'>
           <button bindtap="toplay"  data-id="{{item._id}}"> 原声 </button>
-          <button bindtap="toRecord" data-word="{{item.name}}" data-type="sent" data-id="{{index}}"> {{(index==id && isRecord)?'停止':'录音'}} </button>
+          <button bindtap="toRecord" data-word="{{item.name}}" data-type="sent" data-id="{{item._id}}"> {{(item._id==id && isRecord)?'停止':'录音'}} </button>
           <button bindtap="toReplay"> 回放 </button>
         </view>
       </view>
@@ -32,7 +32,7 @@
       <view class='title'>分数： {{paragraph.score?paragraph.score:''}}</view>
       <view class='flex-wrp buttons'>
         <button bindtap="toplay"  data-id="{{paragraph._id}}"> 原声 </button>
-        <button bindtap="toRecord" data-word="{{paragraph.name}}" data-type="para"> {{(isRecord)?'停止':'录音'}} </button>
+        <button bindtap="toRecord" data-word="{{paragraph.name}}" data-id="{{paragraph._id}}" data-type="para"> {{(paragraph._id==id && isRecord)?'停止':'录音'}} </button>
         <button bindtap="toReplay"> 回放 </button>
       </view>
     </view>
