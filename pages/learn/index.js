@@ -75,6 +75,9 @@ Page({
           src: ret.tempFilePath // this will be change later
         });
       },
+      onRecordIdGenerated: function(ret){
+        console.log(ret.recordId);
+      },
       fail: function (ret) {
         that.setData({
           isRecord: false,
