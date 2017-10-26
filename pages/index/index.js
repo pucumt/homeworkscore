@@ -50,7 +50,7 @@ Page({
         if (res.data.sucess) {
           app.globalData.account.mobile = that.data.userName;
           app.globalData.account.students = res.data.students;
-          wx.navigateTo({
+          wx.redirectTo({
             url: '../learn/list'
           })
         }
