@@ -8,8 +8,8 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
+    "navigationBarBackgroundColor": "#000",
     "navigationBarTitleText": "语音作业点评",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "white"
   }
 }

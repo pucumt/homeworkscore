@@ -8,6 +8,7 @@ page {
   text-align: center;
   font-size: 24px;
   margin-bottom: 15px;
+  margin-top: 5px;
 }
 
 .picker {
@@ -15,6 +16,7 @@ page {
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
+  border-top: 1px solid #fafafa;
 }
 
 .pickerParent{

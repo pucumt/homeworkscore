@@ -32,7 +32,7 @@
       <view class='title'>分数： {{paragraph.score?paragraph.score:''}}</view>
       <view class='flex-wrp buttons'>
         <button bindtap="toplay"  data-id="{{paragraph._id}}"> 原声 </button>
-        <button bindtap="toRecord" data-word="{{paragraph.name}}" data-id="{{paragraph._id}}" data-type="para"> {{(paragraph._id==id && isRecord)?'停止':'录音'}} </button>
+        <button bindtap="toRecord" data-word="{{paragraph.name}}" data-id="{{paragraph._id}}" data-duration="{{paragraph.duration}}" data-type="para"> {{(paragraph._id==id && isRecord)?'停止':'录音'}} </button>
         <button bindtap="toReplay"> 回放 </button>
       </view>
     </view>

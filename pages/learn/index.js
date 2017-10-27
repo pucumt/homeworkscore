@@ -69,13 +69,24 @@ Page({
       return;
     }
 
-    var that = this;
+    var that = this,
+      duration;
     this.setData({
       id: e.currentTarget.dataset.id
     });
-
+    switch (e.currentTarget.dataset.type) {
+      case "para":
+        duration = e.currentTarget.dataset.duration;
+        break;
+      case "word":
+        duration = 3000;
+        break;
+      default:
+        duration = 6000;
+        break;
+    }
     this.recorder.start({
-      duration: 3000,
+      duration: duration, // 3000 word / 6000 sent /setting para
       serverParams: { // 录音服务参数
         coreType: e.currentTarget.dataset.type + ".eval", // 选择内核sent.eval
         refText: e.currentTarget.dataset.word, // 参考文本
