@@ -16,7 +16,7 @@ Page({
     src: null,
     msg: null
   },
-  saveScore: function (score, wordId, contentType, recordId) {
+  saveScore: function (score, wordId, contentType, recordId, setScore) {
     var that = this;
     wx.request({
       url: app.globalData.url + '/app/score',
@@ -38,6 +38,7 @@ Page({
             msg: res.data.error
           });
         }
+        setScore(res.data.scoreId);
       },
       fail: function (e) {
         console.log(e);
@@ -50,18 +51,20 @@ Page({
   },
   play: function () {
     var that = this;
-    this.audioCtx.src = this.data.src;
-    this.audioCtx.onCanplay(() => {
-      // console.log('准备好要播放')
-      that.audioCtx.play();
-    })
-    this.audioCtx.onPlay(() => {
-      // console.log('开始播放')
-    })
-    this.audioCtx.onError((res) => {
-      console.log(res.errMsg)
-      console.log(res.errCode)
-    })
+    if (this.data && this.data.src) {
+      this.audioCtx.src = this.data.src;
+      this.audioCtx.onCanplay(() => {
+        // console.log('准备好要播放')
+        that.audioCtx.play();
+      })
+      this.audioCtx.onPlay(() => {
+        // console.log('开始播放')
+      })
+      this.audioCtx.onError((res) => {
+        console.log(res.errMsg)
+        console.log(res.errCode)
+      })
+    }
   },
   toRecord: function (e) {
     if (this.data.isRecord) {
@@ -70,18 +73,22 @@ Page({
     }
 
     var that = this,
-      duration;
+      duration,
+      contentType;
     this.setData({
       id: e.currentTarget.dataset.id
     });
     switch (e.currentTarget.dataset.type) {
       case "para":
+        contentType = 0;
         duration = e.currentTarget.dataset.duration;
         break;
       case "word":
+        contentType = 1;
         duration = 3000;
         break;
       default:
+        contentType = 2;
         duration = 6000;
         break;
     }
@@ -103,39 +110,39 @@ Page({
       },
       onScore: function (ret) { // 评分成功需要显示评分结果 
         var data = JSON.parse(ret);
-        if (!data.result)
-        {
+        if (!data.result) {
           return;
         }
         var score = data.result.overall; // word
         // console.log("得分" + data.result.overall);
         // console.log(ret)
 
-        var contentType,
-          index,
-          option = {
-            isRecord: false,
-            getScore: true
-          };
-        switch (e.currentTarget.dataset.type) {
-          case "para":
-            contentType = 0;
-            that.data.paragraph.score = score;
-            option.paragraph = that.data.paragraph;
-            break;
-          case "word":
-            contentType = 1;
-            index = that.data.words.findIndex(o => { return o._id == e.currentTarget.dataset.id;});
-            option['words['+index+'].score'] = score;
-            break;
-          default:
-            contentType = 2;
-            index = that.data.sentences.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
-            option['sentences[' + index + '].score'] = score;
-            break;
+        function setScore(scoreId) {
+          var index,
+            option = {
+              isRecord: false,
+              getScore: true
+            };
+          switch (e.currentTarget.dataset.type) {
+            case "para":
+              that.data.paragraph.score = score;
+              that.data.paragraph.scoreId = scoreId;
+              option.paragraph = that.data.paragraph;
+              break;
+            case "word":
+              index = that.data.words.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
+              option['words[' + index + '].score'] = score;
+              option['words[' + index + '].scoreId'] = scoreId;
+              break;
+            default:
+              index = that.data.sentences.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
+              option['sentences[' + index + '].score'] = score;
+              option['sentences[' + index + '].scoreId'] = scoreId;
+              break;
+          }
+          that.setData(option);
         }
-        that.setData(option);
-        that.saveScore(score, e.currentTarget.dataset.id, contentType, data.recordId);
+        that.saveScore(score, e.currentTarget.dataset.id, contentType, data.recordId, setScore);
         // console.log("ceshi ...");
         // console.log(data.result.overall);
         // console.log(e.currentTarget.dataset.id);
@@ -199,7 +206,15 @@ Page({
   toReplay: function (e) {
     // e.currentTarget.dataset.id
     // audioUrl[0] = "../../uploads/books/" + $("#bookId").val() + "/" + $('#lessonId').val() + "/" + content._id + ".mp3";
-    this.play();
+    // /public/uploads/scores/' + studentId + '/'+scoreId + '.mp3'
+    console.log(e.currentTarget.dataset.scoreid);
+
+    if (e.currentTarget.dataset.scoreid) {
+      this.setData({
+        src: app.globalData.url + "/uploads/scores/" + app.globalData.account.curStudent._id + "/" + e.currentTarget.dataset.scoreid + ".mp3"
+      });
+      this.play();
+    }
   },
   /**
    * 生命周期函数--监听页面加载
@@ -211,7 +226,7 @@ Page({
 
     var that = this;
     wx.request({
-      url: app.globalData.url +'/app/contents',
+      url: app.globalData.url + '/app/contents',
       data: {
         studentId: app.globalData.account.curStudent._id,
         lessonId: app.globalData.curLessonId

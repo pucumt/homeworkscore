@@ -14,6 +14,6 @@ App({
     },
     curBook:{},
     curLessonId: null,
-    url:"http://58.221.162.134:88"
+    url: "https://bfbeducation.com" //"http://58.221.162.134:88"
   }
 })
