@@ -4,7 +4,7 @@ const app = getApp()
 
 Page({
   data: {
-    userName: null,
+    userName: null, // 1333807755
     userPassword: null,
     msg: null
   },
