@@ -190,6 +190,7 @@ Page({
         // console.log(ret.recordId);
       },
       fail: function (ret) {
+        console.log(ret);
         that.setData({
           isRecord: false,
           getScore: false
