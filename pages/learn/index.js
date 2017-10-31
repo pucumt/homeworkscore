@@ -92,111 +92,116 @@ Page({
         duration = 6000;
         break;
     }
-    this.recorder.start({
-      duration: duration, // 3000 word / 6000 sent /setting para
-      serverParams: { // 录音服务参数
-        coreType: e.currentTarget.dataset.type + ".eval", // 选择内核sent.eval
-        refText: e.currentTarget.dataset.word, // 参考文本
-        scale: 100,
-        precision: 1,
-        dict_type: 'KK'
-      },
-      onStart: function () {
-        //开始录音
-        that.setData({
-          isRecord: true,
-          getScore: false
-        });
-      },
-      onScore: function (ret) { // 评分成功需要显示评分结果 
-        var data = JSON.parse(ret);
-        if (!data.result) {
-          return;
-        }
-        var score = data.result.overall; // word
-        // console.log("得分" + data.result.overall);
-        // console.log(ret)
-
-        function setScore(scoreId) {
-          var index,
-            option = {
-              isRecord: false,
-              getScore: true
-            };
-          switch (e.currentTarget.dataset.type) {
-            case "para":
-              that.data.paragraph.score = score;
-              that.data.paragraph.scoreId = scoreId;
-              option.paragraph = that.data.paragraph;
-              break;
-            case "word":
-              index = that.data.words.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
-              option['words[' + index + '].score'] = score;
-              option['words[' + index + '].scoreId'] = scoreId;
-              break;
-            default:
-              index = that.data.sentences.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
-              option['sentences[' + index + '].score'] = score;
-              option['sentences[' + index + '].scoreId'] = scoreId;
-              break;
+    try {
+      this.recorder.start({
+        duration: duration, // 3000 word / 6000 sent /setting para
+        serverParams: { // 录音服务参数
+          coreType: e.currentTarget.dataset.type + ".eval", // 选择内核sent.eval
+          refText: e.currentTarget.dataset.word, // 参考文本
+          scale: 100,
+          precision: 1,
+          dict_type: 'KK'
+        },
+        onStart: function () {
+          //开始录音
+          that.setData({
+            isRecord: true,
+            getScore: false
+          });
+        },
+        onScore: function (ret) { // 评分成功需要显示评分结果 
+          var data = JSON.parse(ret);
+          if (!data.result) {
+            return;
           }
-          that.setData(option);
-        }
-        that.saveScore(score, e.currentTarget.dataset.id, contentType, data.recordId, setScore);
-        // console.log("ceshi ...");
-        // console.log(data.result.overall);
-        // console.log(e.currentTarget.dataset.id);
-        // console.log(contentType);
-        // console.log(index);
-      },
-      onStop: function (ret) {
-        that.setData({
-          src: ret.tempFilePath // this will be change later
-        });
+          var score = data.result.overall; // word
+          // console.log("得分" + data.result.overall);
+          // console.log(ret)
 
-        // just for test TBD
-        // var contentType,
-        //   index,
-        //   option = {
-        //     isRecord: false,
-        //     getScore: true
-        //   },
-        //   score=20,
-        //   data={
-        //     recordId: "11111"
-        //   };
-        // switch (e.currentTarget.dataset.type) {
-        //   case "para":
-        //     contentType = 0;
-        //     that.data.paragraph.score = score;
-        //     option.paragraph = that.data.paragraph;
-        //     break;
-        //   case "word":
-        //     contentType = 1;
-        //     index = that.data.words.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
-        //     option['words[' + index + '].score'] = score;
-        //     break;
-        //   default:
-        //     contentType = 2;
-        //     index = that.data.sentences.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
-        //     option['sentences[' + index + '].score'] = score;
-        //     break;
-        // }
-        // that.setData(option);
-        // that.saveScore(score, e.currentTarget.dataset.id, contentType, data.recordId);
-      },
-      onRecordIdGenerated: function (ret) {
-        // console.log("recordId");
-        // console.log(ret.recordId);
-      },
-      fail: function (ret) {
-        console.log(ret);
-        that.setData({
-          isRecord: false,
-          getScore: false
-        });
-      }
-    });
+          function setScore(scoreId) {
+            var index,
+              option = {
+                isRecord: false,
+                getScore: true
+              };
+            switch (e.currentTarget.dataset.type) {
+              case "para":
+                that.data.paragraph.score = score;
+                that.data.paragraph.scoreId = scoreId;
+                option.paragraph = that.data.paragraph;
+                break;
+              case "word":
+                index = that.data.words.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
+                option['words[' + index + '].score'] = score;
+                option['words[' + index + '].scoreId'] = scoreId;
+                break;
+              default:
+                index = that.data.sentences.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
+                option['sentences[' + index + '].score'] = score;
+                option['sentences[' + index + '].scoreId'] = scoreId;
+                break;
+            }
+            that.setData(option);
+          }
+          that.saveScore(score, e.currentTarget.dataset.id, contentType, data.recordId, setScore);
+          // console.log("ceshi ...");
+          // console.log(data.result.overall);
+          // console.log(e.currentTarget.dataset.id);
+          // console.log(contentType);
+          // console.log(index);
+        },
+        onStop: function (ret) {
+          that.setData({
+            src: ret.tempFilePath // this will be change later
+          });
+
+          // just for test TBD
+          // var contentType,
+          //   index,
+          //   option = {
+          //     isRecord: false,
+          //     getScore: true
+          //   },
+          //   score=20,
+          //   data={
+          //     recordId: "11111"
+          //   };
+          // switch (e.currentTarget.dataset.type) {
+          //   case "para":
+          //     contentType = 0;
+          //     that.data.paragraph.score = score;
+          //     option.paragraph = that.data.paragraph;
+          //     break;
+          //   case "word":
+          //     contentType = 1;
+          //     index = that.data.words.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
+          //     option['words[' + index + '].score'] = score;
+          //     break;
+          //   default:
+          //     contentType = 2;
+          //     index = that.data.sentences.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
+          //     option['sentences[' + index + '].score'] = score;
+          //     break;
+          // }
+          // that.setData(option);
+          // that.saveScore(score, e.currentTarget.dataset.id, contentType, data.recordId);
+        },
+        onRecordIdGenerated: function (ret) {
+          // console.log("recordId");
+          // console.log(ret.recordId);
+        },
+        fail: function (ret) {
+          console.log("fail" + ret);
+          that.setData({
+            isRecord: false,
+            getScore: false
+          });
+        }
+      });
+    }
+    catch (ee) {
+      console.log(ee);
+    }
   },
   toplay: function (e) {
     this.setData({

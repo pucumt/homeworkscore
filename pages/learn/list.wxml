@@ -12,7 +12,7 @@
 
 <view wx:else>
   <view wx:if="{{books && books.length>0}}">
-    <view wx:for="{{books}}" wx:key="*this">
+    <view wx:for="{{books}}" wx:key="bookId">
       <view class='picker' bindtap='gotoBook' data-id="{{item.bookId}}" data-minLesson="{{item.minLesson}}" data-maxLesson="{{item.maxLesson}}">
         <text>{{item.name}}</text>
         <text>></text>

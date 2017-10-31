@@ -2,7 +2,7 @@
 <view wx:if="{{msg==null}}">
   <view class="word" wx:if="{{words && words.length>0}}">
     <view class="section__title">> Words</view>
-    <view wx:for="{{words}}" wx:key="*this" class="flex-wrp">
+    <view wx:for="{{words}}" wx:key="_id" class="flex-wrp">
       <view class="flex-item wordlevel">
         <view class='title'>{{item.name}} {{item.score?item.score:''}}</view>
         <view class='flex-wrp buttons'>
@@ -15,7 +15,7 @@
   </view>
   <view class="sentence" wx:if="{{sentences && sentences.length>0}}">
     <view class="section__title">> Sentences</view>
-    <view wx:for="{{sentences}}" wx:key="*this" class="flex-wrp">
+    <view wx:for="{{sentences}}" wx:key="_id" class="flex-wrp">
       <view class="flex-item wordlevel">
         <view class='title'>{{item.name}} {{item.score?item.score:''}}</view>
         <view class='flex-wrp buttons'>
