@@ -110,6 +110,7 @@ Page({
           });
         },
         onScore: function (ret) { // 评分成功需要显示评分结果 
+          // console.log("onscore:", ret);
           var data = JSON.parse(ret);
           if (!data.result) {
             return;
@@ -151,10 +152,12 @@ Page({
           // console.log(index);
         },
         onStop: function (ret) {
+          // console.log("onstop:", ret);
           that.setData({
-            src: ret.tempFilePath // this will be change later
+            src: ret.tempFilePath, // this will be change later
+            isRecord: false,
+            getScore: false
           });
-
           // just for test TBD
           // var contentType,
           //   index,
@@ -190,8 +193,12 @@ Page({
           // console.log("recordId");
           // console.log(ret.recordId);
         },
+        onError: function (ret) {
+           // console.log("onerror:",ret);
+          // console.log(ret.recordId);
+        },
         fail: function (ret) {
-          console.log("fail" + ret);
+          // console.log("fail:", ret);
           that.setData({
             isRecord: false,
             getScore: false
@@ -200,7 +207,7 @@ Page({
       });
     }
     catch (ee) {
-      console.log(ee);
+       console.log("systemerror:",ee);
     }
   },
   toplay: function (e) {
