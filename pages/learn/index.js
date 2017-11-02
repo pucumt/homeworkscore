@@ -38,7 +38,7 @@ Page({
             msg: res.data.error
           });
         }
-        setScore(res.data.scoreId);
+        setScore();
       },
       fail: function (e) {
         console.log(e);
@@ -119,27 +119,28 @@ Page({
           // console.log("得分" + data.result.overall);
           // console.log(ret)
 
-          function setScore(scoreId) {
+          function setScore() {
             var index,
               option = {
                 isRecord: false,
                 getScore: true
-              };
+              },
+              src = that.data.src;
             switch (e.currentTarget.dataset.type) {
               case "para":
                 that.data.paragraph.score = score;
-                that.data.paragraph.scoreId = scoreId;
+                that.data.paragraph.src = src;
                 option.paragraph = that.data.paragraph;
                 break;
               case "word":
                 index = that.data.words.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
                 option['words[' + index + '].score'] = score;
-                option['words[' + index + '].scoreId'] = scoreId;
+                option['words[' + index + '].src'] = src;
                 break;
               default:
                 index = that.data.sentences.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
                 option['sentences[' + index + '].score'] = score;
-                option['sentences[' + index + '].scoreId'] = scoreId;
+                option['sentences[' + index + '].src'] = src;
                 break;
             }
             that.setData(option);
@@ -158,36 +159,6 @@ Page({
             isRecord: false,
             getScore: false
           });
-          // just for test TBD
-          // var contentType,
-          //   index,
-          //   option = {
-          //     isRecord: false,
-          //     getScore: true
-          //   },
-          //   score=20,
-          //   data={
-          //     recordId: "11111"
-          //   };
-          // switch (e.currentTarget.dataset.type) {
-          //   case "para":
-          //     contentType = 0;
-          //     that.data.paragraph.score = score;
-          //     option.paragraph = that.data.paragraph;
-          //     break;
-          //   case "word":
-          //     contentType = 1;
-          //     index = that.data.words.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
-          //     option['words[' + index + '].score'] = score;
-          //     break;
-          //   default:
-          //     contentType = 2;
-          //     index = that.data.sentences.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
-          //     option['sentences[' + index + '].score'] = score;
-          //     break;
-          // }
-          // that.setData(option);
-          // that.saveScore(score, e.currentTarget.dataset.id, contentType, data.recordId);
         },
         onRecordIdGenerated: function (ret) {
           // console.log("recordId");
@@ -217,14 +188,10 @@ Page({
     this.play();
   },
   toReplay: function (e) {
-    // e.currentTarget.dataset.id
-    // audioUrl[0] = "../../uploads/books/" + $("#bookId").val() + "/" + $('#lessonId').val() + "/" + content._id + ".mp3";
-    // /public/uploads/scores/' + studentId + '/'+scoreId + '.mp3'
-    console.log(e.currentTarget.dataset.scoreid);
-
-    if (e.currentTarget.dataset.scoreid) {
+    // console.log(e.currentTarget.dataset.scoreid);
+    if (e.currentTarget.dataset.src) {
       this.setData({
-        src: app.globalData.url + "/uploads/scores/" + app.globalData.account.curStudent._id + "/" + e.currentTarget.dataset.scoreid + ".mp3"
+        src: e.currentTarget.dataset.src
       });
       this.play();
     }
@@ -236,6 +203,8 @@ Page({
     // console.log("... onload ...");
     this.recorder = new Recorder('17KouyuTestAppKey', '17KouyuTestSecretKey');
     this.audioCtx = wx.createInnerAudioContext();
+
+    // return;
 
     var that = this;
     wx.request({
@@ -265,6 +234,12 @@ Page({
               sentences = [],
               paragraph;
             res.data.forEach(content => {
+              if (content.scoreId)
+              {
+                content.score = parseFloat(content.score);
+                content.src = app.globalData.url + "/uploads/scores/" + app.globalData.account.curStudent._id + "/" + content.scoreId + ".mp3";
+              }
+              
               switch (content.contentType) {
                 case 0:
                   paragraph = content;

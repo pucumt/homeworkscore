@@ -1,39 +1,54 @@
 /* pages/learn/index.wxss */
-.word{
-    margin-bottom:10px;
+
+.word {
+  margin-bottom: 10px;
 }
-.section__title{
-    background-color: #f6f8f9;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 5px 10px;
+
+.section__title {
+  background-color: #f6f8f9;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 5px 10px;
 }
-.flex-wrp{
+
+.flex-wrp {
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
 }
-.flex-item.wordlevel{
+
+.flex-item.wordlevel {
   padding: 5px 0 0;
   font-size: 20px;
   border-bottom: 1px solid gray;
   background-color: #fff;
 }
-.wordlevel .title{
+
+.wordlevel .title {
   padding-left: 20px;
   text-align: left;
   margin-bottom: 10px;
 }
-.buttons{
+
+.buttons {
   flex-direction: row;
 }
-.buttons button{
+
+.buttons button {
   width: 33.33%;
   font-size: 12px;
-  border-radius:0;
-  background-color: #fafafa;
+  border-radius: 0;
   color: #000;
 }
-.buttons button::after{
-  border-radius:0;
+
+.btndefault {
+  background-color: #fafafa;
+}
+
+.button-hover {
+  background-color: #eee;
+}
+
+.buttons button::after {
+  border-radius: 0;
   border-color: #ccc;
 }
