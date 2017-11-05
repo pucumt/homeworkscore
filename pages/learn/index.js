@@ -13,8 +13,17 @@ Page({
     id: 0,
     isRecord: false,
     getScore: false,
+    showPara:false,
     src: null,
     msg: null
+  },
+  showSentenceScore: function (sentences){
+    var option = { showPara:true };
+    for(var i =0;i<sentences.length;i++)
+    {
+      option['sentences[' + i + '].score'] = sentences[i].overall;
+    }
+    this.setData(option);
   },
   saveScore: function (score, wordId, contentType, recordId, setScore) {
     var that = this;
@@ -50,6 +59,9 @@ Page({
     })
   },
   play: function () {
+    if (!this.audioCtx.paused) {
+      this.audioCtx.stop();
+    }
     var that = this;
     if (this.data && this.data.src) {
       this.audioCtx.src = this.data.src;
@@ -71,12 +83,17 @@ Page({
       this.recorder.stop();
       return;
     }
-
+    if (!this.audioCtx.paused)
+    {
+      this.audioCtx.stop();
+    }
+    
     var that = this,
       duration,
       contentType;
     this.setData({
-      id: e.currentTarget.dataset.id
+      id: e.currentTarget.dataset.id,
+      showPara: (e.currentTarget.dataset.type != "para")
     });
     switch (e.currentTarget.dataset.type) {
       case "para":
@@ -110,8 +127,15 @@ Page({
           });
         },
         onScore: function (ret) { // 评分成功需要显示评分结果 
-          // console.log("onscore:", ret);
+          console.log("onscore:", ret);
           var data = JSON.parse(ret);
+
+          // wx.setClipboardData({
+          //   data: ret,
+          //   success: function (res) {
+          //   }
+          // }) // used to log copy
+
           if (!data.result) {
             return;
           }
@@ -131,6 +155,7 @@ Page({
                 that.data.paragraph.score = score;
                 that.data.paragraph.src = src;
                 option.paragraph = that.data.paragraph;
+                that.showSentenceScore(data.result.sentences);
                 break;
               case "word":
                 index = that.data.words.findIndex(o => { return o._id == e.currentTarget.dataset.id; });
@@ -232,7 +257,7 @@ Page({
           else {
             var words = [],
               sentences = [],
-              paragraph;
+              paragraph = null;
             res.data.forEach(content => {
               if (content.scoreId)
               {
@@ -296,7 +321,9 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    if (!this.audioCtx.paused) {
+      this.audioCtx.stop();
+    }
   },
 
   /**

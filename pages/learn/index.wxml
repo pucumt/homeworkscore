@@ -4,36 +4,36 @@
     <view class="section__title">> Words</view>
     <view wx:for="{{words}}" wx:key="_id" class="flex-wrp">
       <view class="flex-item wordlevel">
-        <view class='title'>{{item.name}} {{item.score?item.score:''}}</view>
+        <view class='title'>{{item.name}}  <text>{{item.score?item.score:''}}</text></view>
         <view class='flex-wrp buttons'>
           <button class="btndefault" bindtap="toplay" data-id="{{item._id}}"> 原声 </button>
-          <button class="btndefault" bindtap="toRecord" data-word="{{item.name}}" data-type="word" data-id="{{item._id}}" > {{(item._id==id && isRecord)?'停止':'录音'}} </button>
-          <button class="btndefault" bindtap="toReplay" data-src="{{item.src}}"> 回放 </button>
-        </view>
-      </view>
-    </view>
-  </view>
-  <view class="sentence" wx:if="{{sentences && sentences.length>0}}">
-    <view class="section__title">> Sentences</view>
-    <view wx:for="{{sentences}}" wx:key="_id" class="flex-wrp">
-      <view class="flex-item wordlevel">
-        <view class='title'>{{item.name}} {{item.score?item.score:''}}</view>
-        <view class='flex-wrp buttons'>
-          <button class="btndefault" bindtap="toplay"  data-id="{{item._id}}"> 原声 </button>
-          <button class="btndefault" bindtap="toRecord" data-word="{{item.name}}" data-type="sent" data-id="{{item._id}}"> {{(item._id==id && isRecord)?'停止':'录音'}} </button>
+          <button class="btndefault" bindtap="toRecord" data-word="{{item.name}}" data-type="word" data-id="{{item._id}}"> {{(item._id==id && isRecord)?'停止':'录音'}} </button>
           <button class="btndefault" bindtap="toReplay" data-src="{{item.src}}"> 回放 </button>
         </view>
       </view>
     </view>
   </view>
   <view class="paragraph" wx:if="{{paragraph}}">
-   <view class="section__title">> 课文背诵 </view>
+    <view class="section__title">> 课文背诵 </view>
     <view class="flex-item wordlevel">
-      <view class='title'>分数： {{paragraph.score?paragraph.score:''}}</view>
+      <view class='title'>分数： <text>{{ paragraph.score?paragraph.score:'' }}</text></view>
       <view class='flex-wrp buttons'>
-        <button class="btndefault" bindtap="toplay"  data-id="{{paragraph._id}}"> 原声 </button>
+        <button class="btndefault" bindtap="toplay" data-id="{{paragraph._id}}"> 原声 </button>
         <button class="btndefault" bindtap="toRecord" data-word="{{paragraph.name}}" data-id="{{paragraph._id}}" data-duration="{{paragraph.duration}}" data-type="para"> {{(paragraph._id==id && isRecord)?'停止':'录音'}} </button>
         <button class="btndefault" bindtap="toReplay" data-src="{{paragraph.src}}"> 回放 </button>
+      </view>
+    </view>
+  </view>
+  <view class="sentence" wx:if="{{sentences && sentences.length>0 && (paragraph==null || showPara)}}">
+    <view class="section__title">> Sentences</view>
+    <view wx:for="{{sentences}}" wx:key="_id" class="flex-wrp">
+      <view class="flex-item wordlevel">
+        <view class='title'>{{item.name}} <text>{{item.score?item.score:''}}</text></view>
+        <view class='flex-wrp buttons' wx:if="{{ paragraph==null }}">
+          <button class="btndefault" bindtap="toplay" data-id="{{item._id}}"> 原声 </button>
+          <button class="btndefault" bindtap="toRecord" data-word="{{item.name}}" data-type="sent" data-id="{{item._id}}"> {{(item._id==id && isRecord)?'停止':'录音'}} </button>
+          <button class="btndefault" bindtap="toReplay" data-src="{{item.src}}"> 回放 </button>
+        </view>
       </view>
     </view>
   </view>
