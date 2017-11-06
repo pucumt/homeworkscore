@@ -7,15 +7,26 @@ Page({
    * 页面的初始数据
    */
   data: {
-    words: [{ _id: "111", name: "english" }], // TBD
-    sentences: [{ _id: "222", name: "I like english" }], // TBD
-    paragraph: { _id: "333", name: "I like english very much!" }, // TBD
+    words: [{ _id: "111", name: "english", score:50 }], // TBD
+    sentences: [{ _id: "222", name: "I like english very much!" }], // TBD
+    paragraph: { _id: "333", name: "I like english very much!", score: 50, duration:6000 }, // TBD
     id: 0,
     isRecord: false,
     getScore: false,
     showPara:false,
     src: null,
     msg: null
+  },
+  showMsg: function (msg) {
+    this.setData({
+      msg: msg
+    })
+    var that = this;
+    setTimeout(function () {
+      that.setData({
+        msg: null
+      })
+    }, 3000)
   },
   showSentenceScore: function (sentences){
     var option = { showPara:true };
@@ -137,6 +148,10 @@ Page({
           // }) // used to log copy
 
           if (!data.result) {
+            if(data.error)
+            {
+              that.showMsg("评测出错了，请重新尝试：" + data.error);
+            }
             return;
           }
           var score = data.result.overall; // word
@@ -212,6 +227,16 @@ Page({
     });
     this.play();
   },
+  toplay2: function (e) {
+    if (!this.data.paragraph)
+    {// only when the paragraph is exist will play
+      return;
+    }
+    this.setData({
+      src: app.globalData.url + "/uploads/books/" + app.globalData.curBook.bookId + "/" + app.globalData.curLessonId + "/" + e.currentTarget.dataset.id + ".mp3"
+    });
+    this.play();
+  },
   toReplay: function (e) {
     // console.log(e.currentTarget.dataset.scoreid);
     if (e.currentTarget.dataset.src) {
@@ -229,14 +254,15 @@ Page({
     this.recorder = new Recorder('17KouyuTestAppKey', '17KouyuTestSecretKey');
     this.audioCtx = wx.createInnerAudioContext();
 
-    // return;
+    //  return;
 
     var that = this;
     wx.request({
       url: app.globalData.url + '/app/contents',
       data: {
         studentId: app.globalData.account.curStudent._id,
-        lessonId: app.globalData.curLessonId
+        lessonId: app.globalData.curLessonId,
+        contentType: app.globalData.curType
       },
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值

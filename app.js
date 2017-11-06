@@ -10,13 +10,14 @@ App({
     })
   },
   globalData: {
-    account:{
-      mobile:null,
-      students:[],
-      curStudent:null
+    account: {
+      mobile: null,
+      students: [],
+      curStudent: null
     },
-    curBook:{},
+    curBook: {},
     curLessonId: null,
+    curType: 0,
     url: "https://bfbeducation.com" //"http://58.221.162.134:88"
   }
 })

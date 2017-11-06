@@ -4,6 +4,18 @@
   margin-bottom: 10px;
 }
 
+.msg {
+  position: absolute;
+  width: 100%;
+  top: 50px;
+  text-align: center;
+  color: red;
+}
+
+.msg text {
+  background-color: #ddd;
+}
+
 .section__title {
   background-color: #f6f8f9;
   font-size: 12px;
@@ -30,8 +42,10 @@
   clear: both;
 }
 
-.wordlevel .title  text{
-  float: right;
+.wordlevel .title  text {
+  position: absolute;
+  right: 0;
+  /* float: right; */
   padding-right: 20px;
   color: green;
 }

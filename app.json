@@ -4,7 +4,8 @@
     "pages/logs/logs",
     "pages/learn/index",
     "pages/learn/list",
-    "pages/learn/lessons"
+    "pages/learn/lessons",
+    "pages/learn/category"
   ],
   "window": {
     "backgroundTextStyle": "light",

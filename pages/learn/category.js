@@ -1,4 +1,4 @@
-// pages/learn/lessons.js
+// pages/learn/category.js
 const app = getApp()
 
 Page({
@@ -7,13 +7,13 @@ Page({
    * 页面的初始数据
    */
   data: {
-    lessons: null,
-    msg:"还没有课文呢"
+    categories: [{ name: "背诵", type: 0 }, { name: "朗诵", type: 1 }],
+    msg: null
   },
-  gotoLesson: function (e) {
-    app.globalData.curLessonId = e.currentTarget.dataset.id;
+  gotoCategory: function (e) {
+    app.globalData.curType = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '../learn/category'
+      url: '../learn/index'
     })
   },
   /**
@@ -22,12 +22,10 @@ Page({
   onLoad: function (options) {
     var that = this;
     wx.request({
-      url: app.globalData.url +'/app/lessonList',
+      url: app.globalData.url + '/app/contentTypes',
       data: {
         studentId: app.globalData.account.curStudent._id,
-        bookId: app.globalData.curBook.bookId,
-        minLesson: app.globalData.curBook.minLesson,
-        maxLesson: app.globalData.curBook.maxLesson
+        lessonId: app.globalData.curLessonId
       },
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
@@ -40,12 +38,43 @@ Page({
           });
         }
         else {
-          that.setData({
-            lessons: res.data
-          });
           if (res.data.length == 0) {
             that.setData({
               msg: "还没有课文呢"
+            });
+          }
+          else {
+            var categories = [],
+              paraObj;
+            res.data.forEach(function (content) {
+              var name;
+              switch (content.contentType) {
+                case 0:
+                  name = "背诵";
+                  paraObj = {
+                    type: 0,
+                    name: name
+                  }
+                  break;
+                case 1:
+                  name = "单词";
+                  categories.push({
+                    type: content.contentType,
+                    name: name
+                  });
+                  break;
+                default:
+                  name = "朗诵";
+                  categories.push({
+                    type: content.contentType,
+                    name: name
+                  });
+                  break;
+              }
+            });
+            paraObj && categories.push(paraObj);
+            that.setData({
+              categories: categories
             });
           }
         }
@@ -64,48 +93,48 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-  
+
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-  
+
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-  
+
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-  
+
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-  
+
   },
 
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-  
+
   }
 })

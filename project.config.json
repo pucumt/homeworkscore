@@ -4,14 +4,23 @@
 		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
-		"minified": true
+		"minified": true,
+		"newFeature": true
 	},
-	"compileType": "weapp",
+	"compileType": "miniprogram",
 	"libVersion": "1.6.0",
 	"appid": "wx793a7a081bc1fd15",
 	"projectname": "homeworkscore",
 	"condition": {
-		"weapp": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
 			"current": -1,
 			"list": [
 				{
@@ -31,16 +40,14 @@
 					"name": "lesson",
 					"pathName": "pages/learn/lessons",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "category",
+					"pathName": "pages/learn/category",
+					"query": ""
 				}
 			]
-		},
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
 		}
 	}
 }

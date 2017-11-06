@@ -1,5 +1,5 @@
 <!--pages/learn/index.wxml-->
-<view wx:if="{{msg==null}}">
+<view>
   <view class="word" wx:if="{{words && words.length>0}}">
     <view class="section__title">> Words</view>
     <view wx:for="{{words}}" wx:key="_id" class="flex-wrp">
@@ -28,7 +28,7 @@
     <view class="section__title">> Sentences</view>
     <view wx:for="{{sentences}}" wx:key="_id" class="flex-wrp">
       <view class="flex-item wordlevel">
-        <view class='title'>{{item.name}} <text>{{item.score?item.score:''}}</text></view>
+        <view class='title' bindtap="toplay2" data-id="{{item._id}}">{{item.name}} <text>{{item.score?item.score:''}}</text></view>
         <view class='flex-wrp buttons' wx:if="{{ paragraph==null }}">
           <button class="btndefault" bindtap="toplay" data-id="{{item._id}}"> 原声 </button>
           <button class="btndefault" bindtap="toRecord" data-word="{{item.name}}" data-type="sent" data-id="{{item._id}}"> {{(item._id==id && isRecord)?'停止':'录音'}} </button>
@@ -38,6 +38,6 @@
     </view>
   </view>
 </view>
-<view wx:else>
-  {{msg}}
+<view wx:if="{{ msg }}"  class='msg'>
+  <text>{{msg}}</text>
 </view>
