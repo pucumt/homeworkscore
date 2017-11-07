@@ -76,17 +76,6 @@ Page({
     var that = this;
     if (this.data && this.data.src) {
       this.audioCtx.src = this.data.src;
-      this.audioCtx.onCanplay(() => {
-        // console.log('准备好要播放')
-        that.audioCtx.play();
-      })
-      this.audioCtx.onPlay(() => {
-        // console.log('开始播放')
-      })
-      this.audioCtx.onError((res) => {
-        console.log(res.errMsg)
-        console.log(res.errCode)
-      })
     }
   },
   toRecord: function (e) {
@@ -251,12 +240,22 @@ Page({
    */
   onLoad: function (options) {
     // console.log("... onload ...");
+    var that = this;
     this.recorder = new Recorder('17KouyuTestAppKey', '17KouyuTestSecretKey');
     this.audioCtx = wx.createInnerAudioContext();
-
+    this.audioCtx.onCanplay(() => {
+      // console.log('准备好要播放')
+      that.audioCtx.play();
+    })
+    this.audioCtx.onPlay(() => {
+      // console.log('开始播放')
+    })
+    this.audioCtx.onError((res) => {
+      that.showMsg(res.errMsg)
+      console.log(res.errCode)
+    })
     //  return;
 
-    var that = this;
     wx.request({
       url: app.globalData.url + '/app/contents',
       data: {
