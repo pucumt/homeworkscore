@@ -36,7 +36,7 @@ Page({
     }
     this.setData(option);
   },
-  saveScore: function (score, wordId, contentType, recordId, setScore) {
+  saveScore: function (score, wordId, contentType, recordId, scoreResult, setScore) {
     var that = this;
     wx.request({
       url: app.globalData.url + '/app/score',
@@ -46,7 +46,8 @@ Page({
         wordId: wordId,
         contentType: contentType,
         score: score,
-        recordId: recordId
+        recordId: recordId,
+        scoreResult: JSON.stringify(scoreResult)
       },
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
@@ -143,7 +144,8 @@ Page({
             }
             return;
           }
-          var score = data.result.overall; // word
+          var score = data.result.overall,
+            sentences = (e.currentTarget.dataset.type == "para" && data.result.sentences); // word
           // console.log("得分" + data.result.overall);
           // console.log(ret)
 
@@ -174,7 +176,7 @@ Page({
             }
             that.setData(option);
           }
-          that.saveScore(score, e.currentTarget.dataset.id, contentType, data.recordId, setScore);
+          that.saveScore(score, e.currentTarget.dataset.id, contentType, data.recordId, sentences, setScore);
           // console.log("ceshi ...");
           // console.log(data.result.overall);
           // console.log(e.currentTarget.dataset.id);
