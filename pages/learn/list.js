@@ -95,6 +95,12 @@ Page({
         this.toGetList();
       }
     }
+
+    // else {
+    //   this.setData({
+    //     curStudent: null
+    //   });
+    // }
   },
 
   /**
@@ -108,7 +114,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    if (this.globalStudents.length > 1) {
+      this.setData({
+        curStudent: null
+      });
+    }
   },
 
   /**
