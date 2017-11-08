@@ -2,6 +2,8 @@
 const Recorder = require('../../vendor/skegn_weapp_sdk_v2/index.js').Recorder;
 const app = getApp()
 
+console.log("new index")
+
 Page({
   /**
    * 页面的初始数据
@@ -13,7 +15,7 @@ Page({
     id: 0,
     isRecord: false,
     getScore: false,
-    showPara:false,
+    showPara: false,
     src: null,
     msg: null
   },
@@ -28,11 +30,13 @@ Page({
       })
     }, 3000)
   },
-  showSentenceScore: function (sentences){
-    var option = { showPara:true };
-    for(var i =0;i<sentences.length;i++)
-    {
-      option['sentences[' + i + '].score'] = sentences[i].overall;
+  getShowScore: function (score) {
+    return Math.round(score * score / 100);
+  },
+  showSentenceScore: function (sentences) {
+    var option = { showPara: true };
+    for (var i = 0; i < sentences.length; i++) {
+      option['sentences[' + i + '].score'] = this.getShowScore(sentences[i].overall);
     }
     this.setData(option);
   },
@@ -84,11 +88,10 @@ Page({
       this.recorder.stop();
       return;
     }
-    if (!this.audioCtx.paused)
-    {
+    if (!this.audioCtx.paused) {
       this.audioCtx.stop();
     }
-    
+
     var that = this,
       duration,
       contentType;
@@ -128,7 +131,7 @@ Page({
           });
         },
         onScore: function (ret) { // 评分成功需要显示评分结果 
-          console.log("onscore:", ret);
+          // console.log("onscore:", ret);
           var data = JSON.parse(ret);
 
           // wx.setClipboardData({
@@ -138,13 +141,13 @@ Page({
           // }) // used to log copy
 
           if (!data.result) {
-            if(data.error)
-            {
+            if (data.error) {
               that.showMsg("评测出错了，请重新尝试：" + data.error);
             }
             return;
           }
           var score = data.result.overall,
+            score = that.getShowScore(score),
             sentences = (e.currentTarget.dataset.type == "para" && data.result.sentences); // word
           // console.log("得分" + data.result.overall);
           // console.log(ret)
@@ -196,7 +199,7 @@ Page({
           // console.log(ret.recordId);
         },
         onError: function (ret) {
-           // console.log("onerror:",ret);
+          // console.log("onerror:",ret);
           // console.log(ret.recordId);
         },
         fail: function (ret) {
@@ -209,7 +212,7 @@ Page({
       });
     }
     catch (ee) {
-       console.log("systemerror:",ee);
+      console.log("systemerror:", ee);
     }
   },
   toplay: function (e) {
@@ -219,8 +222,7 @@ Page({
     this.play();
   },
   toplay2: function (e) {
-    if (!this.data.paragraph)
-    {// only when the paragraph is exist will play
+    if (!this.data.paragraph) {// only when the paragraph is exist will play
       return;
     }
     this.setData({
@@ -286,12 +288,11 @@ Page({
               sentences = [],
               paragraph = null;
             res.data.forEach(content => {
-              if (content.scoreId)
-              {
+              if (content.scoreId) {
                 content.score = parseFloat(content.score);
                 content.src = app.globalData.url + "/uploads/scores/" + app.globalData.account.curStudent._id + "/" + content.scoreId + ".mp3";
               }
-              
+
               switch (content.contentType) {
                 case 0:
                   paragraph = content;
@@ -351,6 +352,9 @@ Page({
     if (!this.audioCtx.paused) {
       this.audioCtx.stop();
     }
+    this.audioCtx.destroy();
+    this.audioCtx = null;
+    this.recorder = null;
   },
 
   /**
