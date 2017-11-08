@@ -7,7 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    categories: [{ name: "背诵", type: 0 }, { name: "朗诵", type: 1 }],
+    categories: [],
     msg: null
   },
   gotoCategory: function (e) {

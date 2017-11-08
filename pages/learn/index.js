@@ -7,9 +7,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    words: [{ _id: "111", name: "english", score:50 }], // TBD
-    sentences: [{ _id: "222", name: "I like english very much!" }], // TBD
-    paragraph: { _id: "333", name: "I like english very much!", score: 50, duration:6000 }, // TBD
+    words: [], // TBD
+    sentences: [], // TBD
+    paragraph: null, // TBD
     id: 0,
     isRecord: false,
     getScore: false,
