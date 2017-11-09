@@ -2,7 +2,11 @@
 const app = getApp()
 
 Page({
-
+  onShareAppMessage: function (res) {
+    return {
+      title: app.globalData.account.curStudent.name+' 的成绩单'
+    };
+  },
   /**
    * 页面的初始数据
    */
