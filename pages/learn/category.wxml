@@ -3,7 +3,11 @@
   <view wx:if="{{categories && categories.length>0}}">
     <view wx:for="{{categories}}" wx:key="_id">
       <view class='picker' bindtap='gotoCategory' data-id="{{item.type}}">
-        <text>{{item.name}}</text>
+        <view>
+          <text>{{item.name}}</text>
+          <text class="score">{{item.score}}</text>
+          <text class="process">{{item.process}}</text>
+        </view>
         <text>></text>
       </view>
     </view>

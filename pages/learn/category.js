@@ -38,45 +38,40 @@ Page({
           });
         }
         else {
-          if (res.data.length == 0) {
-            that.setData({
-              msg: "还没有课文呢"
+          var categories = [],
+            paraObj;
+          if (res.data.wordCount)
+          {
+            categories.push({
+              type: 1,
+              name: "单词 ",
+              process: "进度(" + (res.data.stuLesson && res.data.stuLesson.wordProcess ) + "/" + res.data.wordCount+")",
+              score: (res.data.stuLesson && parseFloat(res.data.stuLesson.wordAve))
             });
           }
-          else {
-            var categories = [],
-              paraObj;
-            res.data.forEach(function (content) {
-              var name;
-              switch (content.contentType) {
-                case 0:
-                  name = "背诵";
-                  paraObj = {
-                    type: 0,
-                    name: name
-                  }
-                  break;
-                case 1:
-                  name = "单词";
-                  categories.push({
-                    type: content.contentType,
-                    name: name
-                  });
-                  break;
-                default:
-                  name = "朗诵";
-                  categories.push({
-                    type: content.contentType,
-                    name: name
-                  });
-                  break;
-              }
-            });
-            paraObj && categories.push(paraObj);
-            that.setData({
-              categories: categories
+
+          if (res.data.sentCount) {
+            categories.push({
+              type: 2,
+              name: "朗诵 ",
+              process: "进度(" + (res.data.stuLesson && res.data.stuLesson.sentProcess) + "/" + res.data.sentCount + ")",
+              score: (res.data.stuLesson && parseFloat(res.data.stuLesson.sentAve))
             });
           }
+
+          if (res.data.isPara) {
+            categories.push({
+              type: 0,
+              name: "背诵 ",
+              process: " ",
+              score: (res.data.stuLesson && parseFloat(res.data.stuLesson.paragraphAve))
+            });
+          }
+
+          paraObj && categories.push(paraObj);
+          that.setData({
+            categories: categories
+          });
         }
       },
       fail: function (e) {

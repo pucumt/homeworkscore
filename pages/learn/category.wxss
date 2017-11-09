@@ -1,4 +1,5 @@
 /* pages/learn/category.wxss */
+
 /* pages/learn/list.wxss */
 
 page {
@@ -13,6 +14,28 @@ page {
   border-top: 1px solid #eee;
 }
 
-.pickerParent{
-  margin-bottom: 20px; 
+.pickerParent {
+  margin-bottom: 20px;
+}
+
+.picker text {
+  line-height: 40px;
+}
+
+.picker .process {
+  font-size: 14px;
+  color: #8e8e8e;
+   margin-left: 15px;
+}
+
+.picker .score {
+  margin-left: 15px;
+  color: #fff;
+  font-weight: bold;
+  height: 40px;
+  width: 60px;
+  background: #08c9ba;
+  border-radius: 50px;
+  display: inline-block;
+  text-align: center;
 }
