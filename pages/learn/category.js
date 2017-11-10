@@ -26,7 +26,7 @@ Page({
   onLoad: function (options) {
     var that = this;
     wx.request({
-      url: app.globalData.url + '/app/contentTypes',
+      url: app.globalData.url + '/app/contentTypes2',
       data: {
         studentId: app.globalData.account.curStudent._id,
         lessonId: app.globalData.curLessonId
