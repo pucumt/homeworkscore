@@ -20,6 +20,7 @@ page {
 
 .picker text {
   line-height: 40px;
+  vertical-align: middle;
 }
 
 .picker .process {

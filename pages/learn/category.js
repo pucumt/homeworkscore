@@ -24,6 +24,20 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
     var that = this;
     wx.request({
       url: app.globalData.url + '/app/contentTypes2',
@@ -44,13 +58,12 @@ Page({
         else {
           var categories = [],
             paraObj;
-          if (res.data.wordCount)
-          {
+          if (res.data.wordCount) {
             categories.push({
               type: 1,
               name: "单词 ",
-              process: "进度(" + (res.data.stuLesson && res.data.stuLesson.wordProcess ) + "/" + res.data.wordCount+")",
-              score: (res.data.stuLesson && parseFloat(res.data.stuLesson.wordAve))
+              process: "进度(" + (res.data.stuLesson && res.data.stuLesson.wordProcess || 0) + "/" + res.data.wordCount + ")",
+              score: (res.data.stuLesson && parseFloat(res.data.stuLesson.wordAve) || '')
             });
           }
 
@@ -58,8 +71,8 @@ Page({
             categories.push({
               type: 2,
               name: "朗诵 ",
-              process: "进度(" + (res.data.stuLesson && res.data.stuLesson.sentProcess) + "/" + res.data.sentCount + ")",
-              score: (res.data.stuLesson && parseFloat(res.data.stuLesson.sentAve))
+              process: "进度(" + (res.data.stuLesson && res.data.stuLesson.sentProcess || 0) + "/" + res.data.sentCount + ")",
+              score: (res.data.stuLesson && parseFloat(res.data.stuLesson.sentAve) || '')
             });
           }
 
@@ -68,7 +81,7 @@ Page({
               type: 0,
               name: "背诵 ",
               process: " ",
-              score: (res.data.stuLesson && parseFloat(res.data.stuLesson.paragraphAve))
+              score: (res.data.stuLesson && parseFloat(res.data.stuLesson.paragraphAve) || '')
             });
           }
 
@@ -86,20 +99,6 @@ Page({
         return;
       }
     })
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
   },
 
   /**

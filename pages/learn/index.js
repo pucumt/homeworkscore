@@ -193,6 +193,8 @@ Page({
             isRecord: false,
             getScore: false
           });
+          // var score=50;
+          // that.saveScore(score, e.currentTarget.dataset.id, contentType, "11111", [], function(){});
         },
         onRecordIdGenerated: function (ret) {
           // console.log("recordId");
